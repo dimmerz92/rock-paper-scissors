@@ -29,7 +29,7 @@ function playRound(playerChoice, computerChoice) {
     } else if (playerChoice == computerChoice) {
         return [drawString, "draw"];
     } else {
-        return [loseString, true];
+        return [loseString, false];
     }
 }
 
