@@ -1,7 +1,7 @@
 // a console game of rock paper scissors
 
 function getComputerChoice() {
-    //generates a random number between 0-2 and uses a switch statement to determine rock, paper, scissors
+    //generates random number between 0-2, uses switch statement to determine outcome
     switch(Math.floor(Math.random() * 3)) {
         case 1:
             return "rock";
@@ -15,7 +15,7 @@ function getComputerChoice() {
 }
 
 function playRound(playerChoice, computerChoice) {
-    //plays a single round of rock, paper, scissors against the computer by taking in a player and computer argument
+    //plays a single round, takes a player and computer arg, returns a string and state
     const winString = `You win! ${playerChoice} beats ${computerChoice}`;
     const loseString = `You lose! ${computerChoice} beats ${playerChoice}`;
     const drawString = `It's a draw! You both chose ${computerChoice}`;
@@ -41,10 +41,12 @@ selections.forEach(selection => {
     selection.addEventListener("click", function game() {
         const [winnerText, score] = playRound(selection.id, getComputerChoice());
         const result = document.getElementById("result");
+        //ends game after 5 rounds
         if (playerWinCount == 5 || computerWinCount == 5) {
             selection.removeEventListener("click", game);
             return;
         }
+        //returns outcome of round and increments scores
         if (score == "draw") {
             result.textContent = winnerText;
         } else if (score && playerWinCount < 4) {
