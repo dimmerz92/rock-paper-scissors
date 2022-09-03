@@ -41,6 +41,7 @@ selections.forEach(selection => {
     selection.addEventListener("click", function game() {
         const [winnerText, score] = playRound(selection.id, getComputerChoice());
         const result = document.getElementById("result");
+        const tally = document.getElementById("tally");
         //ends game after 5 rounds
         if (playerWinCount == 5 || computerWinCount == 5) {
             selection.removeEventListener("click", game);
@@ -62,5 +63,6 @@ selections.forEach(selection => {
             computerWinCount++;
             result.textContent = `The computer bested you! You lost ${computerWinCount} to ${playerWinCount}`
         }
+        tally.textContent = `Your score: ${playerWinCount}  Computer's score ${computerWinCount}`;
     });
 });
