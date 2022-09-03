@@ -18,46 +18,47 @@ function playRound(playerChoice, computerChoice) {
     //plays a single round of rock, paper, scissors against the computer by taking in a player and computer argument
     const winString = `You win! ${playerChoice} beats ${computerChoice}`;
     const loseString = `You lose! ${computerChoice} beats ${playerChoice}`;
+    const drawString = `It's a draw! You both chose ${computerChoice}`;
     playerChoice = playerChoice.toLowerCase();
     if (playerChoice == "rock" && computerChoice == "scissors") {
-        return winString;
+        return [winString, true];
     } else if (playerChoice == "paper" && computerChoice == "rock") {
-        return winString;
+        return [winString, true];
     } else if (playerChoice == "scissors" && computerChoice == "paper") {
-        return winString;
+        return [winString, true];
     } else if (playerChoice == computerChoice) {
-        return `It's a draw! You both chose ${computerChoice}`;
+        return [drawString, "draw"];
     } else {
-        return loseString;
+        return [loseString, true];
     }
 }
 
+let playerWinCount = 0;
+let computerWinCount = 0;
+
 const selections = document.querySelectorAll(".selection");
 selections.forEach(selection => {
-    selection.addEventListener("click", () => {
-        const elmnt = document.getElementsByClassName("result");
-        const winner = playRound(selection.id, getComputerChoice());
-        document.getElementById("result").textContent = winner;
+    selection.addEventListener("click", function game() {
+        const [winnerText, score] = playRound(selection.id, getComputerChoice());
+        const result = document.getElementById("result");
+        if (playerWinCount == 5 || computerWinCount == 5) {
+            selection.removeEventListener("click", game);
+            return;
+        }
+        if (score == "draw") {
+            result.textContent = winnerText;
+        } else if (score && playerWinCount < 4) {
+            playerWinCount++;
+            result.textContent = winnerText;
+        } else if (score && playerWinCount == 4) {
+            playerWinCount++;
+            result.textContent = `You bested the computer! You won ${playerWinCount} to ${computerWinCount}`;
+        } else if (!score && computerWinCount < 4) {
+            computerWinCount++;
+            result.textContent = winnerText;
+        } else {
+            computerWinCount++;
+            result.textContent = `The computer bested you! You lost ${computerWinCount} to ${playerWinCount}`
+        }
     });
 });
-
-//function game() {
-    //plays a 5 round game of rock, paper, scissors and keeps and reports the score at the end
-    //let playerWinCount = 0;
-    //let computerWinCount = 0;
-    //for (let i = 0; i < 5; i++) {
-    //    let round = playRound(prompt("Enter a choice of rock, paper, or scissors"), getComputerChoice());
-    //    if (round.includes("You win!")) {
-    //        playerWinCount++;
-    //    } else if (round.includes("You lose!")) {
-    //        computerWinCount++;
-    //    }
-    //}
-    //if (playerWinCount > computerWinCount) {
-    //    return `You won! You got ${playerWinCount} and the computer got ${computerWinCount}`;
-    //} else if (playerWinCount < computerWinCount) {
-    //    return `You lost! You got ${playerWinCount} and the computer got ${computerWinCount}`;
-    //} else {
-    //    return "It appears to have been a draw!"
-    //}
-//}
